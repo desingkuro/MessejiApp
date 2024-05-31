@@ -1,12 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import 'react-native-gesture-handler';
+import Presentacion from './screens/Presentacion';
+import Stack from './navigation/Stack';
+import { NavigationContainer } from '@react-navigation/native';
+import ContextoGeneral, { Contexto } from './context/ContextoGeneral';
+import Moderador from './screens/Moderador';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ContextoGeneral>
+      <NavigationContainer>
+        <Moderador/>
+      </NavigationContainer>
+    </ContextoGeneral>
   );
 }
 
