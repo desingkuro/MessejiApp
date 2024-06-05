@@ -6,14 +6,17 @@ import { AntDesign } from '@expo/vector-icons';
 import { Contexto } from '../context/ContextoGeneral';
 import * as imagePicker from 'expo-image-picker'
 import useUserName from '../hooks/useUserName';
+import ScreenLoad from '../components/ScreenLoad';
 
 
 function CreacionDeUsuario({navigation}) {
     const {
         imgUsuario,setImgUsuario,imgSelecionada,setImgUsuarioSelecionada,iconoUsuario,
-        setUsuario,setLoginActivo,nombreUsuario
+        setUsuario,setLoginActivo,nombreUsuario,obtenerUsuarios,setInformacionUsuario,
+        guardarNuevo
     } = useContext(Contexto);
     const {query,error,setQuery,btonActivo} = useUserName(nombreUsuario)
+    const [load,setLoad] = useState(false)
 
     //seleciona la imagen
     const pickImage = async () => {
@@ -44,9 +47,25 @@ function CreacionDeUsuario({navigation}) {
     function obtenerNombreUsuario(nombre){
         setQuery(nombre)
     }
-    function login(){
+    async function login(){
+        const objetoUser = {
+            id:query,
+            nombre:query,
+            mensajes:[]
+        }
+        setLoad(true)
+        const {user,encontrado} = await  obtenerUsuarios(objetoUser.id)
+        if(encontrado){
+            console.log(user)
+            setUsuario(user.usuario)
+            setInformacionUsuario(user)
+        }else{
+            setUsuario(objetoUser.usuario)
+            guardarNuevo(objetoUser)
+            setInformacionUsuario(objetoUser)
+        }
+        setLoad(false)
         setLoginActivo(true)
-        setUsuario(query)
     }
   return (
     <LinearGradient 
@@ -84,6 +103,7 @@ function CreacionDeUsuario({navigation}) {
                 </Text>
             </TouchableOpacity>
         </View>
+        <ScreenLoad load={load}/>
     </LinearGradient>
   )
 }

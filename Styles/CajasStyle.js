@@ -1,3 +1,5 @@
+import { StyleSheet } from "react-native";
+
 export const CajasStyles = StyleSheet.create({
     cajaContainer:{
         height:180,
